@@ -4,11 +4,10 @@
 #include <stdlib.h>
 
 int main(){
-    int count = 9, aux[count], lista[count];
+    int count = 9, aux, listaux[count], lista[count];
 
     for (int i = 0; i <= count; i++){
         lista[i] = rand() % count+2;
-        aux[i] = lista[i];
     }
 
     for (int i = 0; i < count; i++){
@@ -24,12 +23,14 @@ int main(){
         {
             if (lista [i] > lista[j])
             {
-                lista[i] = lista[i+1];
-                lista[i] = lista[j];
-
+                aux = lista[j];
+                for (int k = 0; k < count; k++)
+                {
+                    listaux[k] = lista[k+1];
+                }
+                listaux[i] = aux;
             }
         }
-        
     }
 
 
