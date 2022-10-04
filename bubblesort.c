@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 int main(){
-    int count = 9, aux, listaux[count], lista[count];
+    int count = 9, aux, lista[count];
 
     for (int i = 0; i <= count; i++){
         lista[i] = rand() % count+2;
@@ -17,18 +17,15 @@ int main(){
     printf("\n");
 
 
-    for (int i = 0; i <= count; i++)
+    for (int i = 0; i < count-1; i++)
     {
-        for (int j = i+1; j < count; j++)
+        for (int j = 0; j < count - i - 1; j++)
         {
-            if (lista [i] > lista[j])
+            if (lista [j] > lista[j+1])
             {
                 aux = lista[j];
-                for (int k = 0; k < count; k++)
-                {
-                    listaux[k] = lista[k+1];
-                }
-                listaux[i] = aux;
+                lista[j] = lista[j+1];
+                lista[j+1] = aux;
             }
         }
     }
