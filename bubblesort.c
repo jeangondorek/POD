@@ -4,10 +4,16 @@
 #include <stdlib.h>
 
 int main(){
-    int count = 9, aux, lista[count];
+    int count;
 
+    printf("Digite a quantidade de números da lista: ");
+    scanf("%d", &count);
+
+    int aux, lista[count];
+
+    // o valor dentro da lista será gerado aleatóriamente no range de (count + 10) que foi digitado pelo usuário
     for (int i = 0; i <= count; i++){
-        lista[i] = rand() % count+2;
+        lista[i] = rand() % count+10;
     }
 
     for (int i = 0; i < count; i++){
@@ -37,5 +43,4 @@ int main(){
     }
     printf("\n");
 
-    return;
 }
