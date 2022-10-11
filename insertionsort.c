@@ -20,18 +20,17 @@ int printarray(int count, int * lista){
 }
 
 int insertionsort(int count, int * lista){
-    int aux;
-    for (int i = 0; i < count-1; i++)
+    int aux, j, i;
+    for (i = 1; i < count-1; i++)
     {
-        for (int j = 0; j < count; j++)
+        aux = lista[i];
+        j = i-1;
+        while (j >= 0 && lista[j]>aux)
         {
-            if (lista[j] > lista[j+1])
-            {
-                aux = lista[j+1];
-                lista[j+1] = lista[j];
-            }
-            lista[j] = aux;
+            lista[j+1] = lista[j];
+            j = j-1;
         }
+        lista[j+1] = aux;
     }
     printarray(count, lista);
 }
