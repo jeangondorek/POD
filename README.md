@@ -19,6 +19,9 @@ Executando os exercicios sobre pesquisa e ordenação de dados em <img src="http
  <a href="https://github.com/jeangondorek/POD/blob/main/insertionsort.c" target="_blank">
     <p>insertionsort</p>
  </a>
- <a href="https://github.com/jeangondorek/POD/blob/main/ordenacao-externa.c" target="_blank">
+ <a href="https://github.com/jeangondorek/POD/blob/main/selectionsort.c" target="_blank">
+    <p>selectionsort</p>
+ </a>
+  <a href="https://github.com/jeangondorek/POD/blob/main/ordenacao-externa.c" target="_blank">
     <p>ordenacao-externa</p>
  </a>
