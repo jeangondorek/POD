@@ -1,6 +1,6 @@
 # POD
 
-Executando os exercicios sobre pesquisa e ordenação de dados.<br>
+Executando os exercicios sobre pesquisa e ordenação de dados em C.<br>
 [bubblesort][https://github.com/jeangondorek/POD/blob/main/bubblesort.c]<br>
 [heapsort][https://github.com/jeangondorek/POD/blob/main/heapsort.c]<br>
 [insertionsort.][https://github.com/jeangondorek/POD/blob/main/insertionsort.c]<br>
