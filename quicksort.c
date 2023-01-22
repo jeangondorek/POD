@@ -25,7 +25,6 @@ void quicksort(int lista[], int inicio, int fim){
 
         quicksort(lista, inicio, pivo-1);
         quicksort(lista, pivo, fim);
-        printarray(lista, fim);
     }
 }
 
