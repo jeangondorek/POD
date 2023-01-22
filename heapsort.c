@@ -12,26 +12,15 @@ int * array(int count){
     return lista;
 }
 
-int printarray(int count, int * lista){
+int printarray(int count, int lista[]){
     for (int i = 0; i < count; i++){
         printf("%d\t", lista[i]);
     }
     printf("\n");
 }
 
-int heapsort(int count, int * lista){
-    int aux, j, i;
-    for (i = 1; i < count-1; i++)
-    {
-        aux = lista[i];
-        j = i-1;
-        while (j >= 0 && lista[j]>aux)
-        {
-            lista[j+1] = lista[j];
-            j = j-1;
-        }
-        lista[j+1] = aux;
-    }
+int heapsort(int count, int lista[]){
+
     printarray(count, lista);
 }
 

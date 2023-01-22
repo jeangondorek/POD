@@ -19,19 +19,9 @@ int printarray(int count, int lista[]){
     printf("\n");
 }
 
-int ordenacaoexterna(int count, int * lista){
-    int aux, j, i;
-    for (i = 1; i < count-1; i++)
-    {
-        aux = lista[i];
-        j = i-1;
-        while (j >= 0 && lista[j]>aux)
-        {
-            lista[j+1] = lista[j];
-            j = j-1;
-        }
-        lista[j+1] = aux;
-    }
+int ordenacaoexterna(int count, int lista[]){
+
+
     printarray(count, lista);
 }
 
