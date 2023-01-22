@@ -18,58 +18,57 @@ int * array(int count){
     return lista;
 }
 
+void merge(int lista[], int inicio, int meio, int fim){
+    //criar listas auxiliares
+    int iarray1 = meio - inicio + 1; //inicio de cada lista
+    int iarray2 = fim - meio;
+ 
+    int array1[iarray1], array2[iarray2];
+    // dividindo a lista em 2
+    for (int i = 0; i < iarray1; i++)
+        array1[i] = lista[inicio + i];
+    for (int j = 0; j < iarray2; j++)
+        array2[j] = lista[meio + 1+ j];
 
-void merge(int arr[], int l, int m, int r){
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 = r - m;
-    // Create temp arrays
-    int L[n1], R[n2];
-    // Copy data to temp array
-    for (i = 0; i < n1; i++)
-        L[i] = arr[l + i];
-    for (j = 0; j < n2; j++)
-        R[j] = arr[m + 1+ j];
-    // Merge the temp arrays
-    i = 0;
-    j = 0;
-    k = l;
-    while (i < n1 && j < n2){
-        if (L[i] <= R[j]){
-            arr[k] = L[i];
+    int i = 0, k = inicio, j=0;
+
+    //juntar as 2 listas ordenadamente
+    while (i < iarray1 && j < iarray2){
+        if (array1[i] <= array2[j]){
+            lista[k] = array1[i];
             i++;
         }
         else
         {
-        arr[k] = R[j];
+        lista[k] = array2[j];
         j++;
         }
         k++;
     }
-    // Copy the remaining elements of L[]
-    while (i < n1){
-        arr[k] = L[i];
+    
+    while (i < iarray1){
+        lista[k] = array1[i];
         i++;
         k++;
     }
-    // Copy the remaining elements of R[]
-    while (j < n2){
-        arr[k] = R[j];
+    
+    while (j < iarray2){
+        lista[k] = array2[j];
         j++;
         k++;
     }
 }
 
-void mergeSort(int arr[], int l, int r){
-if (l < r){
-    int m = l+(r-l)/2;
+void mergeSort(int lista[], int inicio, int fim){
+if (inicio < fim){
+    int meio = inicio+(fim-inicio)/2;
 
-    mergeSort(arr, l, m);
-    mergeSort(arr, m+1, r);
-    //test array printer
-    //printArray(arr, r+1);
+    mergeSort(lista, inicio, meio);
+    mergeSort(lista, meio+1, fim);
+    //teste array printer
+    //printarray(lista, fim+1);
 
-    merge(arr, l, m, r);
+    merge(lista, inicio, meio, fim);
     }
 }
 
