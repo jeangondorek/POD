@@ -19,9 +19,37 @@ int printarray(int count, int lista[]){
     printf("\n");
 }
 
-int heapsort(int count, int lista[]){
+void creaheap(int lista[], int count, int i) {
+    // Find maior among root, left child and right child
+    int maior = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
 
-    printarray(count, lista);
+    if (left < count && lista[left] > lista[maior])
+        maior = left;
+
+    if (right < count && lista[right] > lista[maior])
+        maior = right;
+
+    if (maior != i) {
+        int aux = lista[i];
+        lista[i]= lista[maior];
+        lista[maior]= aux;
+        creaheap(lista, count, maior);
+    }
+}
+
+void heapsort(int lista[], int count) {
+    // criando heap máximo
+    for (int i = count / 2 - 1; i >= 0; i--)
+        creaheap(lista, count, i);
+
+    for (int i = count - 1; i >= 0; i--) {
+        int aux = lista[0];
+        lista[0] = lista[i];
+        lista[i] = aux;
+        creaheap(lista, i, 0);
+    }
 }
 
 int main(){
@@ -32,7 +60,8 @@ int main(){
 
     int * lista = array(count);
     printarray(count, lista);
-    heapsort(count, lista);
+    heapsort(lista, count);
+    printarray(count, lista);
 
     return 0;
 }
