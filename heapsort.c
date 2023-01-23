@@ -20,7 +20,6 @@ int printarray(int count, int lista[]){
 }
 
 void creaheap(int lista[], int count, int i) {
-    // Find maior among root, left child and right child
     int maior = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
