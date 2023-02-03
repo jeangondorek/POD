@@ -26,7 +26,7 @@ int main(){
     {
         for (int j = 0; j < count - 1; j++)
         {
-            if (lista [i] > lista[j])
+            if (lista [i] < lista[j])
             {
                 aux = lista[j];
                 lista[j] = lista[i];
