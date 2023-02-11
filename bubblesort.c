@@ -1,5 +1,5 @@
 // bubble sort
-
+// without flags, with flags more optimized
 #include <stdio.h>
 #include <stdlib.h>
 
