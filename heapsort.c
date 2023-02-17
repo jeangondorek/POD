@@ -23,7 +23,7 @@ void creaheap(int lista[], int count, int i) {
     int maior = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
-
+    //criando heap maximo, ele vai criando do mais baixo nivel para o mais alto
     if (left < count && lista[left] > lista[maior])
         maior = left;
 
@@ -39,7 +39,7 @@ void creaheap(int lista[], int count, int i) {
 }
 
 void heapsort(int lista[], int count) {
-    // criando heap máximo
+    // criando heap máximo, conforme for ordenado ele fara a ordenação no vetor, e cada vez desconsiderando -1 das posições totais do vetor
     for (int i = count / 2 - 1; i >= 0; i--)
         creaheap(lista, count, i);
 

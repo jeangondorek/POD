@@ -22,7 +22,7 @@ void quicksort(int lista[], int inicio, int fim){
     int pivo;
     if (inicio < fim){
         pivo = Particiona(lista, inicio, fim);
-
+        //feita de forma recursiva dividindo ao maximo para ordenar todos
         quicksort(lista, inicio, pivo-1);
         quicksort(lista, pivo, fim);
     }
@@ -31,6 +31,7 @@ void quicksort(int lista[], int inicio, int fim){
 int Particiona(int lista[], int inicio, int fim){
     int aux;
     int pivo=fim, k=inicio;
+    //faz trocas para deixar os menores ou iguais antes e maiores depois
     for (int i=inicio; i < fim; i++){
         if (lista[i] <= lista[pivo]){
             aux = lista[i];
