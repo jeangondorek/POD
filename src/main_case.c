@@ -13,6 +13,7 @@
 #include "create_heap.h"
 #include "create_merge.h"
 #include "create_quick.h"
+#include "external_sort.h"
 
 int main(){
     int count;
@@ -33,7 +34,8 @@ int main(){
     printf("6. Bubble Sort With Flags\n");
 
     printf("7. Bubble Sort\n");
-    printf("8. Terminar\n");
+    printf("8. Ordenação Externa\n");
+    printf("9. Terminar\n");
 
     int opcao;
     scanf("%d", &opcao);
@@ -69,7 +71,11 @@ int main(){
             bubble_sort(lista, count);
             break;
         case 8:
-            printf("Encerrando programa.");
+            printarray(lista, count);
+            external_sort(lista, count);
+            break;
+        case 9:
+            printf("Encerrando programa.\n");
             break;
         default:
             printf("Opção inválida!\n");
