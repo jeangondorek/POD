@@ -6,7 +6,7 @@
 void external_sort(int lista[], int count) {
     int block_size = 5; 
 
-    int temp[500];
+    int temp[count];
 
     for (int inicio = 0; inicio < count; inicio += block_size) {
         int fim = inicio + block_size - 1;
