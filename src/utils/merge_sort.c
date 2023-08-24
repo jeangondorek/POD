@@ -7,8 +7,6 @@ if (inicio < fim){
 
     merge_sort(lista, inicio, meio);
     merge_sort(lista, meio+1, fim);
-    //teste array printer
-    //printarray(lista, fim+1);
 
     create_merge(lista, inicio, meio, fim);
     }

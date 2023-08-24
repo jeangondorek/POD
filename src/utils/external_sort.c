@@ -4,8 +4,7 @@
 #include "merge_block.h"
 
 void external_sort(int lista[], int count) {
-    int block_size = 5; 
-
+    int block_size = 5;
     int temp[count];
 
     for (int inicio = 0; inicio < count; inicio += block_size) {
@@ -18,7 +17,7 @@ void external_sort(int lista[], int count) {
     }
 
     for (int bloco = block_size; bloco < count; bloco *= 2) {
-        for (int inicio = 0; inicio < count - 1; inicio += 2 * bloco) {
+        for (int inicio = 0; inicio < count - bloco; inicio += 2 * bloco) {
             int meio = inicio + bloco - 1;
             int fim = inicio + 2 * bloco - 1;
             if (fim >= count) {
