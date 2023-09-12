@@ -161,7 +161,9 @@ int create_quick(int lista[], int inicio, int fim){
     int aux;
     int pivo=fim, k=inicio;
     
+    // a função create_quick é responsável por criar o pivo que será utilizado para dividir o array
     for (int i=inicio; i < fim; i++){
+        // se o valor do array for menor ou igual ao pivo, ele é trocado de lugar com o valor da posição k
         if (lista[i] <= lista[pivo]){
             aux = lista[i];
             lista[i]= lista[k];
@@ -169,6 +171,7 @@ int create_quick(int lista[], int inicio, int fim){
             k++;
         }
     }
+    // se o valor do array for maior que o pivo, ele é trocado de lugar com o valor da posição pivo
     if (lista[k] > lista[pivo]){
         aux = lista[pivo];
         lista[pivo] = lista[k];
@@ -180,8 +183,11 @@ int create_quick(int lista[], int inicio, int fim){
 
 int quick_sort(int lista[], int inicio, int fim){
     int pivo;
+    // o quick sort faz a ordenação do array de forma recursiva
     if (inicio < fim){
+        // a função create_quick retorna o pivo que será utilizado para dividir o array
         pivo = create_quick(lista, inicio, fim);
+        // a função quick_sort é chamada novamente para ordenar os arrays menores que o pivo e maiores que o pivo
         quick_sort(lista, inicio, pivo-1);
         quick_sort(lista, pivo, fim);
     }
