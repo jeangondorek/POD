@@ -30,10 +30,9 @@ int *create_array(int size);
 int main(){
 
 	int i;
-    // váriavel que defini tamanho do vetor
-    int count = 100000; 
+    // váriavel que define tamanho do vetor
+    int count = 200000; 
     
-    // em cerca de 2horas o programa não terminou UMA execução com 1 milhão. Não tenho como aguardar mais tempo
     
     // variavel que recebe o vetor criado pela função create_array
     int *lista = create_array(count);
@@ -47,44 +46,57 @@ int main(){
 	int bubbleVec[count];
 	copia(lista, bubbleVec, count);
 
+
+    // tamanho de variavel para que seja possível salvar a quantidade de trocas do bubble sort e do insertion sort
+    // unsigned long long int
+
     clock_t begin = clock();
-	bubbleSort(bubbleVec, count);
+	//bubbleSort(bubbleVec, count);
+    unsigned long long int *bubbleSwaps = (unsigned long long int *)malloc(count * sizeof(unsigned long long int));
+    bubbleSwaps[0] = bubbleSort(bubbleVec, count);
     clock_t end = clock();
     double time_spent_bubble = (double)(end - begin) / CLOCKS_PER_SEC;
 
 	printf("\nBubble sort: ");
-	printarray(bubbleVec, count);
+	//printarray(bubbleVec, count);
 
     // selection sort
     int selection_sortVec[count];
 	copia(lista, selection_sortVec, count);
 
     begin = clock();
-	selection_sort(selection_sortVec, count);
+	//selection_sort(selection_sortVec, count);
+    unsigned long long int *selectionSwaps = (unsigned long long int *)malloc(count * sizeof(unsigned long long int));
+    selectionSwaps[0] = selection_sort(selection_sortVec, count);
+
     end = clock();
     double time_spent_selection = (double)(end - begin) / CLOCKS_PER_SEC;
 
 	printf("\nSelection sort: ");
-	printarray(selection_sortVec, count);
+	//printarray(selection_sortVec, count);
 
 	// insertion sort
     int insertion_sortVec[count];
 	copia(lista, insertion_sortVec, count);
 
     begin = clock();
-	insertion_sort(insertion_sortVec, count);
+	//insertion_sort(insertion_sortVec, count);
+    unsigned long long int *insertionSwaps = (unsigned long long int *)malloc(count * sizeof(unsigned long long int));
+    insertionSwaps[0] = insertion_sort(insertion_sortVec, count);
     end = clock();
     double time_spent_insertion = (double)(end - begin) / CLOCKS_PER_SEC;
 
 	printf("\nInsertion sort: ");
-	printarray(insertion_sortVec, count);
+	//printarray(insertion_sortVec, count);
 
 	// quick sort
     int quick_sortVec[count];
 	copia(lista, quick_sortVec, count);
 
     begin = clock();
-	quick_sort(quick_sortVec, 0, count - 1);
+	//quick_sort(quick_sortVec, 0, count - 1);
+    unsigned long long int *quickSwaps = (unsigned long long int *)malloc(count * sizeof(unsigned long long int));
+    quickSwaps[0] = quick_sort(quick_sortVec, 0, count - 1);
     end = clock();
     double time_spent_quick = (double)(end - begin) / CLOCKS_PER_SEC;
 
@@ -92,14 +104,23 @@ int main(){
 	//printarray(quick_sortVec, count);
 	printf("\n");
 
-    free(lista);
 
     printf("\n end time bubble: %f", time_spent_bubble);
-    printf("\n end selection: %f", time_spent_selection);
     printf("\n end time insertion: %f", time_spent_insertion);
-    printf("\n end time quick: %f", time_spent_quick);
+    printf("\n end selection: %f", time_spent_selection);
+    printf("\n end time quick: %f\n", time_spent_quick);
+    printf("Trocas bubble: %llu\n", bubbleSwaps[0]);
+    printf("Trocas insertion: %llu\n", insertionSwaps[0]);
+    printf("Trocas selection: %llu\n", selectionSwaps[0]);
+    printf("Trocas quick: %llu\n", quickSwaps[0]);
 
     printf("\n");
+
+    free(lista);
+    free(bubbleSwaps);
+    free(insertionSwaps);
+    free(selectionSwaps);
+    free(quickSwaps);
 
 	return 0;
 }
@@ -110,51 +131,54 @@ void copia(int *A, int *V, int size){
     	     V[i] = A[i];
 }
 
-int bubbleSort(int *lista, int count){
-    // utilizado bubble sort feito na vez que fiz essa matéria pela primeira vez
-    // inclusive utilizando flags para otimizar o algoritmo
-    int swapped, aux;
-    for (int i = 0; i < count - 1; i++){
+int bubbleSort(int *lista, int count) {
+    int swapped, aux, swaps = 0;
+    for (int i = 0; i < count - 1; i++) {
         swapped = 0;
-        for (int j = 0; j < count - i - 1; j++){
-            if (lista[j] > lista[j+1]){
+        for (int j = 0; j < count - i - 1; j++) {
+            if (lista[j] > lista[j + 1]) {
                 aux = lista[j];
-                lista[j] = lista[j+1];
-                lista[j+1] = aux;
+                lista[j] = lista[j + 1];
+                lista[j + 1] = aux;
                 swapped = 1;
+                swaps++;
             }
         }
-        if (swapped == 0) 
+        if (swapped == 0)
             break;
     }
+    return swaps;
 }
 
-int selection_sort(int lista[], int count){
-    // utilizado selection sort feito na vez que fiz essa matéria pela primeira vez
-    int aux;
-    for (int i = 0; i < count; i++){
-        for (int j = 0; j < count - 1; j++){
-            if (lista [i] < lista[j]){
+
+int selection_sort(int lista[], int count) {
+    int aux, swaps = 0;
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < count - 1; j++) {
+            if (lista[i] < lista[j]) {
                 aux = lista[j];
                 lista[j] = lista[i];
                 lista[i] = aux;
+                swaps++;
             }
         }
     }
+    return swaps;
 }
 
-int insertion_sort(int * lista, int count){
-    // utilizado selection sort feito na vez que fiz essa matéria pela primeira vez
-    int aux, j, i;
-    for (i = 0; i < count; i++){
+int insertion_sort(int *lista, int count) {
+    int aux, j, i, swaps = 0;
+    for (i = 0; i < count; i++) {
         aux = lista[i];
-        j = i-1;
-        while (j >= 0 && lista[j]>aux){
-            lista[j+1] = lista[j];
-            j = j-1;
+        j = i - 1;
+        while (j >= 0 && lista[j] > aux) {
+            lista[j + 1] = lista[j];
+            j = j - 1;
+            swaps++;
         }
-        lista[j+1] = aux;
+        lista[j + 1] = aux;
     }
+    return swaps;
 }
 
 int create_quick(int lista[], int inicio, int fim){
@@ -212,7 +236,7 @@ int *create_array(int count) {
     srand(time(NULL)); 
 
     for (int i = 0; i < count; i++) {
-        lista[i] = rand() % 1000;
+        lista[i] = rand() % count;
     }
     return lista;
 }
