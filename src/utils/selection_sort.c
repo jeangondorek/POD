@@ -1,7 +1,8 @@
 #include<stdio.h>
 
-void selection_sort(int lista[], int count){
+long selection_sort(int lista[], int count){
 int aux;
+long counts;
 for (int i = 0; i < count; i++)
     {
         for (int j = 0; j < count - 1; j++)
@@ -11,7 +12,9 @@ for (int i = 0; i < count; i++)
                 aux = lista[j];
                 lista[j] = lista[i];
                 lista[i] = aux;
+                counts++;
             }
         }
     }
+    return counts;
 }
