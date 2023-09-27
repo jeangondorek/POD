@@ -1,7 +1,8 @@
 #include <stdio.h>
 
-void bubble_sort(int lista[], int count) {
+long bubble_sort(int lista[], int count) {
     int aux;
+    long counts=0;
     for (int i = 0; i < count-1; i++)
     {
         for (int j = 0; j < count - i - 1; j++)
@@ -11,7 +12,9 @@ void bubble_sort(int lista[], int count) {
                 aux = lista[j];
                 lista[j] = lista[j+1];
                 lista[j+1] = aux;
+                counts++;
             }
         }
     }
+    return counts;
 }

@@ -1,7 +1,8 @@
 #include <stdio.h>
 
-void bubble_sort_wtf(int lista[], int count) {
+long bubble_sort_wtf(int lista[], int count) {
 int swapped, aux;
+long counts = 0;
     for (int i = 0; i < count - 1; i++)
     {
         swapped = 0;
@@ -13,9 +14,11 @@ int swapped, aux;
                 lista[j] = lista[j+1];
                 lista[j+1] = aux;
                 swapped = 1;
+                counts++;
             }
         }
         if (swapped == 0) 
             break;
     }
+    return counts;
 }

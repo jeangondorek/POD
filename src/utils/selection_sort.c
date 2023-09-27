@@ -2,7 +2,7 @@
 
 long selection_sort(int lista[], int count){
 int aux;
-long counts;
+long counts = 0;
 for (int i = 0; i < count; i++)
     {
         for (int j = 0; j < count - 1; j++)
