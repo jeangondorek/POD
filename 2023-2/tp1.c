@@ -27,17 +27,17 @@
 #include <time.h>
 
 void copia(long *A, long *v, int size);
-int bubbleSort(long *A, int size);
-int selection_sort(long *A, int size);
-int insertion_sort(long *A, int size);
-int quick_sort(long *A, int init ,int size);
+long bubbleSort(long *A, int size);
+long selection_sort(long *A, int size);
+long insertion_sort(long *A, int size);
+long quick_sort(long *A, int init ,int size, long trocas);
 void printarray(long *A, int size);
-int create_quick(long *A, int inicio, int fim);
+long create_quick(long *A, int inicio, int fim, long quickSwaps);
 long *create_array(int size);
 
 int main(){
 	int i;
-    int count = 100000;
+    int count = 200000;
     long *lista = create_array(count);
 
 	long bubbleVec[count];
@@ -68,7 +68,7 @@ int main(){
     long quickSwaps = (long)malloc(count * sizeof(long));
 	copia(lista, quick_sortVec, count);
     begin = clock();
-    quickSwaps = quick_sort(quick_sortVec, 0, count - 1);
+    quick_sort(quick_sortVec, 0, count - 1, quickSwaps);
     end = clock();
     double time_spent_quick = (double)(end - begin) / CLOCKS_PER_SEC;
 
@@ -94,8 +94,9 @@ void copia(long *A, long *V, int size){
     	     V[i] = A[i];
 }
 
-int bubbleSort(long *lista, int count) {
-    int swapped, aux, swaps = 0;
+long bubbleSort(long *lista, int count) {
+    int swapped, aux;
+    long swaps = 0;
     for (int i = 0; i < count - 1; i++) {
         swapped = 0;
         for (int j = 0; j < count - i - 1; j++) {
@@ -113,8 +114,9 @@ int bubbleSort(long *lista, int count) {
     return swaps;
 }
 
-int selection_sort(long lista[], int count) {
-    int aux, swaps = 0;
+long selection_sort(long lista[], int count) {
+    int aux;
+    long swaps = 0;
     for (int i = 0; i < count; i++) {
         for (int j = 0; j < count - 1; j++) {
             if (lista[i] < lista[j]) {
@@ -128,8 +130,9 @@ int selection_sort(long lista[], int count) {
     return swaps;
 }
 
-int insertion_sort(long *lista, int count) {
-    int aux, j, i, swaps = 0;
+long insertion_sort(long *lista, int count) {
+    int aux, j, i;
+    long swaps = 0;
     for (i = 0; i < count; i++) {
         aux = lista[i];
         j = i - 1;
@@ -143,7 +146,7 @@ int insertion_sort(long *lista, int count) {
     return swaps;
 }
 
-int create_quick(long lista[], int inicio, int fim){
+long create_quick(long lista[], int inicio, int fim, long quickSwaps){
     int aux;
     int pivo=fim, k=inicio;
     for (int i=inicio; i < fim; i++){
@@ -152,6 +155,7 @@ int create_quick(long lista[], int inicio, int fim){
             lista[i]= lista[k];
             lista[k]= aux;
             k++;
+            quickSwaps++;
         }
     }
     if (lista[k] > lista[pivo]){
@@ -159,16 +163,17 @@ int create_quick(long lista[], int inicio, int fim){
         lista[pivo] = lista[k];
         lista[k] = aux;
         pivo=k;
+        quickSwaps++;
     }
     return pivo;
 }
 
-int quick_sort(long lista[], int inicio, int fim){
+long quick_sort(long lista[], int inicio, int fim, long quickSwaps){
     int pivo;
     if (inicio < fim){
-        pivo = create_quick(lista, inicio, fim);
-        quick_sort(lista, inicio, pivo-1);
-        quick_sort(lista, pivo, fim);
+        pivo = create_quick(lista, inicio, fim, quickSwaps);
+        quick_sort(lista, inicio, pivo-1, quickSwaps);
+        quick_sort(lista, pivo, fim, quickSwaps);
     }
 }
 
