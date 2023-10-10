@@ -7,18 +7,18 @@
  * @copyright Copyright (c) 2023
  *
  * 
- * Atenção: Antes de entregar, conferir se dos dados acima da documentação estão
+ * Atenção: Antes de entregar, conferir se os dados acima da documentação estão
  * preenchidos corretamente.
  *
  * https://docs.google.com/spreadsheets/d/18EfC-9DBctZAxrB3jfeXbegzUGeH3m_pfbL-Z6ANA-E/edit?usp=sharing
  * 
- * Código teve diversos problemas e existem algumas limitações quanto ao uso de algumas variaveis dentro desse código
- * porém como me parece ser obrigatório o uso os problemas persistem e não foram resolvidos.
- * Existem um código funcional feito sem esses problemas no repositório do github.
+ * Código teve diversos problemas e existem algumas limitações quanto ao uso de algumas variáveis dentro desse código,
+ * porém como me parece ser obrigatório o uso, os problemas persistem e não foram resolvidos.
+ * Existe um código funcional feito sem esses problemas no repositório do github.
  * https://github.com/jeangondorek/POD
  * Boa parte do código já havia sido desenvolvida com outro professor, porém implementações de medição de tempo e trocas
- * foram implementadas para atender esse trabalho PORÉM, nesse código não funcionou.
- * Na contagem de parte dos algoritmos quando os valores ficam mto altos estoura a memória deles e não faz a contagem
+ * foram implementadas para atender a este trabalho PORÉM, neste código não funcionou.
+ * Na contagem de parte dos algoritmos quando os valores ficam muito altos, estoura a memória deles e não faz a contagem.
  * Já no outro código tudo funciona corretamente.
  **/
 
@@ -26,49 +26,49 @@
 #include <stdlib.h>
 #include <time.h>
 
-void copia(long *A, long *v, int size);
-long bubbleSort(long *A, int size);
-long selection_sort(long *A, int size);
-long insertion_sort(long *A, int size);
-long quick_sort(long *A, int init ,int size, long trocas);
-void printarray(long *A, int size);
-long create_quick(long *A, int inicio, int fim, long quickSwaps);
-long *create_array(int size);
+void copia(unsigned long long *A, unsigned long long *v, int size);
+unsigned long long bubbleSort(unsigned long long *A, int size);
+unsigned long long selection_sort(unsigned long long *A, int size);
+unsigned long long insertion_sort(unsigned long long *A, int size);
+unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, int size, unsigned long long *quickSwaps);
+void printarray(unsigned long long *A, int size);
+unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *quickSwaps);
+unsigned long long *create_array(int size);
 
-int main(){
-	int i;
-    int count = 200000;
-    long *lista = create_array(count);
+int main() {
+    int i;
+    int count = 10000;
+    unsigned long long *lista = create_array(count);
 
-	long bubbleVec[count];
-    long bubbleSwaps = (long)malloc(count * sizeof(long));
-	copia(lista, bubbleVec, count);
+    unsigned long long bubbleVec[count];
+    unsigned long long bubbleSwaps;
+    copia(lista, bubbleVec, count);
     clock_t begin = clock();
     bubbleSwaps = bubbleSort(bubbleVec, count);
     clock_t end = clock();
     double time_spent_bubble = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    long selection_sortVec[count];
-    long selectionSwaps = (long)malloc(count * sizeof(long));
-	copia(lista, selection_sortVec, count);
+    unsigned long long selection_sortVec[count];
+    unsigned long long selectionSwaps;
+    copia(lista, selection_sortVec, count);
     begin = clock();
     selectionSwaps = selection_sort(selection_sortVec, count);
     end = clock();
     double time_spent_selection = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    long insertion_sortVec[count];
-    long insertionSwaps = (long)malloc(count * sizeof(long));
-	copia(lista, insertion_sortVec, count);
+    unsigned long long insertion_sortVec[count];
+    unsigned long long insertionSwaps;
+    copia(lista, insertion_sortVec, count);
     begin = clock();
     insertionSwaps = insertion_sort(insertion_sortVec, count);
     end = clock();
     double time_spent_insertion = (double)(end - begin) / CLOCKS_PER_SEC;
 
-    long quick_sortVec[count];
-    long quickSwaps = (long)malloc(count * sizeof(long));
-	copia(lista, quick_sortVec, count);
+    unsigned long long quick_sortVec[count];
+    unsigned long long quickSwaps = 0;
+    copia(lista, quick_sortVec, count);
     begin = clock();
-    quick_sort(quick_sortVec, 0, count - 1, quickSwaps);
+    quick_sort(quick_sortVec, 0, count - 1, &quickSwaps);
     end = clock();
     double time_spent_quick = (double)(end - begin) / CLOCKS_PER_SEC;
 
@@ -76,27 +76,28 @@ int main(){
     printf("\n end time insertion: %f", time_spent_insertion);
     printf("\n end selection: %f", time_spent_selection);
     printf("\n end time quick: %f\n", time_spent_quick);
-    
-    printf("Trocas bubble: %ld\n", bubbleSwaps);
-    printf("Trocas insertion: %ld\n", insertionSwaps);
-    printf("Trocas selection: %ld\n", selectionSwaps);
-    printf("Trocas quick: %ld\n", quickSwaps);
+
+    printf("Trocas bubble: %lld\n", bubbleSwaps);
+    printf("Trocas insertion: %lld\n", insertionSwaps);
+    printf("Trocas selection: %lld\n", selectionSwaps);
+    printf("Trocas quick: %lld\n", quickSwaps);
 
     printf("\n");
 
     free(lista);
-	return 0;
+    return 0;
 }
 
-void copia(long *A, long *V, int size){
-	int i;
-	for (i = 0 ; i < size ; i++)
-    	     V[i] = A[i];
+void copia(unsigned long long *A, unsigned long long *V, int size) {
+    int i;
+    for (i = 0; i < size; i++)
+        V[i] = A[i];
 }
 
-long bubbleSort(long *lista, int count) {
-    int swapped, aux;
-    long swaps = 0;
+unsigned long long bubbleSort(unsigned long long *lista, int count) {
+    unsigned long long swapped;
+    int aux;
+    unsigned long long swaps = 0;
     for (int i = 0; i < count - 1; i++) {
         swapped = 0;
         for (int j = 0; j < count - i - 1; j++) {
@@ -114,25 +115,27 @@ long bubbleSort(long *lista, int count) {
     return swaps;
 }
 
-long selection_sort(long lista[], int count) {
-    int aux;
-    long swaps = 0;
-    for (int i = 0; i < count; i++) {
-        for (int j = 0; j < count - 1; j++) {
-            if (lista[i] < lista[j]) {
-                aux = lista[j];
-                lista[j] = lista[i];
-                lista[i] = aux;
-                swaps++;
+unsigned long long selection_sort(unsigned long long lista[], int count) {
+    unsigned long long counts = 0;
+    for (int i = 0; i < count - 1; i++) {
+        int min_index = i;
+        for (int j = i + 1; j < count; j++) {
+            if (lista[j] < lista[min_index]) {
+                min_index = j;
             }
         }
+        if (min_index != i) {
+            int aux = lista[i];
+            lista[i] = lista[min_index];
+            lista[min_index] = aux;
+            counts++;
+        }
     }
-    return swaps;
+    return counts;
 }
-
-long insertion_sort(long *lista, int count) {
+unsigned long long insertion_sort(unsigned long long *lista, int count) {
     int aux, j, i;
-    long swaps = 0;
+    unsigned long long swaps = 0;
     for (i = 0; i < count; i++) {
         aux = lista[i];
         j = i - 1;
@@ -146,51 +149,51 @@ long insertion_sort(long *lista, int count) {
     return swaps;
 }
 
-long create_quick(long lista[], int inicio, int fim, long quickSwaps){
+unsigned long long create_quick(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *quickSwaps) {
     int aux;
-    int pivo=fim, k=inicio;
-    for (int i=inicio; i < fim; i++){
-        if (lista[i] <= lista[pivo]){
+    unsigned long long pivo = fim, k = inicio;
+    for (int i = inicio; i < fim; i++) {
+        if (lista[i] <= lista[pivo]) {
             aux = lista[i];
-            lista[i]= lista[k];
-            lista[k]= aux;
+            lista[i] = lista[k];
+            lista[k] = aux;
             k++;
             quickSwaps++;
         }
     }
-    if (lista[k] > lista[pivo]){
+    if (lista[k] > lista[pivo]) {
         aux = lista[pivo];
         lista[pivo] = lista[k];
         lista[k] = aux;
-        pivo=k;
         quickSwaps++;
     }
     return pivo;
 }
 
-long quick_sort(long lista[], int inicio, int fim, long quickSwaps){
-    int pivo;
-    if (inicio < fim){
+unsigned long long quick_sort(unsigned long long *lista, unsigned long long inicio, int fim, unsigned long long *quickSwaps) {
+    unsigned long long pivo;
+    if (inicio < fim) {
         pivo = create_quick(lista, inicio, fim, quickSwaps);
-        quick_sort(lista, inicio, pivo-1, quickSwaps);
+        quick_sort(lista, inicio, pivo - 1, quickSwaps);
         quick_sort(lista, pivo, fim, quickSwaps);
     }
+    return quickSwaps;
 }
 
-void printarray(long lista[], int count){
-    for (int i = 0; i < count; i++){
-        printf("%ld\t", lista[i]);
+void printarray(unsigned long long *lista, int count) {
+    for (int i = 0; i < count; i++) {
+        printf("%lld\t", lista[i]);
     }
     printf("\n");
 }
 
-long *create_array(int count) {
-    long *lista = (long *)malloc(count * sizeof(long));
+unsigned long long *create_array(int count) {
+    unsigned long long *lista = (unsigned long long *)malloc(count * sizeof(unsigned long long));
     if (lista == NULL) {
         perror("Falha na alocação de memória");
         exit(EXIT_FAILURE);
     }
-    srand(time(NULL)); 
+    srand(time(NULL));
     for (int i = 0; i < count; i++) {
         lista[i] = rand() % count;
     }
