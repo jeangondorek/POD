@@ -66,7 +66,7 @@ int main() {
 
     unsigned long long quick_sortVec[count];
     copia(lista, quick_sortVec, count);
-    unsigned long long quickSwaps = 0; // Contagem de trocas para o Quick Sort
+    unsigned long long quickSwaps = 0;
     begin = clock();
     quick_sort(quick_sortVec, 0, count - 1, &quickSwaps);
     end = clock();
