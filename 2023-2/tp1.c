@@ -6,7 +6,7 @@
  *
  * @copyright Copyright (c) 2023
  *
- * 
+ *
  * Atenção: Antes de entregar, conferir se os dados acima da documentação estão
  * preenchidos corretamente.
  *
@@ -30,9 +30,9 @@ void copia(unsigned long long *A, unsigned long long *v, int size);
 unsigned long long bubbleSort(unsigned long long *A, int size);
 unsigned long long selection_sort(unsigned long long *A, int size);
 unsigned long long insertion_sort(unsigned long long *A, int size);
-unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, int size, unsigned long long *quickSwaps);
+unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas);
+unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas);
 void printarray(unsigned long long *A, int size);
-unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *quickSwaps);
 unsigned long long *create_array(int size);
 
 int main() {
@@ -65,8 +65,8 @@ int main() {
     double time_spent_insertion = (double)(end - begin) / CLOCKS_PER_SEC;
 
     unsigned long long quick_sortVec[count];
-    unsigned long long quickSwaps = 0;
     copia(lista, quick_sortVec, count);
+    unsigned long long quickSwaps = 0; // Contagem de trocas para o Quick Sort
     begin = clock();
     quick_sort(quick_sortVec, 0, count - 1, &quickSwaps);
     end = clock();
@@ -133,6 +133,7 @@ unsigned long long selection_sort(unsigned long long lista[], int count) {
     }
     return counts;
 }
+
 unsigned long long insertion_sort(unsigned long long *lista, int count) {
     int aux, j, i;
     unsigned long long swaps = 0;
@@ -149,7 +150,7 @@ unsigned long long insertion_sort(unsigned long long *lista, int count) {
     return swaps;
 }
 
-unsigned long long create_quick(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *quickSwaps) {
+unsigned long long create_quick(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas) {
     int aux;
     unsigned long long pivo = fim, k = inicio;
     for (int i = inicio; i < fim; i++) {
@@ -158,26 +159,24 @@ unsigned long long create_quick(unsigned long long *lista, unsigned long long in
             lista[i] = lista[k];
             lista[k] = aux;
             k++;
-            quickSwaps++;
+            (*trocas)++;
         }
     }
     if (lista[k] > lista[pivo]) {
         aux = lista[pivo];
         lista[pivo] = lista[k];
         lista[k] = aux;
-        quickSwaps++;
+        (*trocas)++;
     }
-    return pivo;
+    return k;
 }
 
-unsigned long long quick_sort(unsigned long long *lista, unsigned long long inicio, int fim, unsigned long long *quickSwaps) {
-    unsigned long long pivo;
+unsigned long long quick_sort(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas) {
     if (inicio < fim) {
-        pivo = create_quick(lista, inicio, fim, quickSwaps);
-        quick_sort(lista, inicio, pivo - 1, quickSwaps);
-        quick_sort(lista, pivo, fim, quickSwaps);
+        unsigned long long pivo = create_quick(lista, inicio, fim, trocas);
+        quick_sort(lista, inicio, pivo - 1, trocas);
+        quick_sort(lista, pivo + 1, fim, trocas);
     }
-    return quickSwaps;
 }
 
 void printarray(unsigned long long *lista, int count) {
