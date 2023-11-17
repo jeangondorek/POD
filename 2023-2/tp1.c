@@ -1,7 +1,7 @@
 /**
- * @file tp1.c
+ * @file tp2.c
  * @author Jean Carlos Canova Gondorek
- * @version 1.0
+ * @version 2.0
  * @date 2023-09-11
  *
  * @copyright Copyright (c) 2023
@@ -26,12 +26,26 @@
 #include <stdlib.h>
 #include <time.h>
 
+unsigned long long selectionSwaps;
+unsigned long long bubbleSwaps;
+unsigned long long quickSwaps = 0;
+unsigned long long insertionSwaps;
+
+unsigned long long heapSwaps = 0;
+unsigned long long radixSwaps = 0;
+void copia(unsigned long long *A, unsigned long long *V, int size);
+unsigned long long heap_sort(unsigned long long *A, unsigned long long inicio);
+unsigned long long create_heap(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
+unsigned long long getMax(unsigned long long *A, int size);
+void countSort(unsigned long long *A, int size, unsigned long long exp);
+void radixSort(unsigned long long *A, int size);
+
 void copia(unsigned long long *A, unsigned long long *v, int size);
 unsigned long long bubbleSort(unsigned long long *A, int size);
 unsigned long long selection_sort(unsigned long long *A, int size);
 unsigned long long insertion_sort(unsigned long long *A, int size);
-unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas);
-unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas);
+unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
+unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
 void printarray(unsigned long long *A, int size);
 unsigned long long *create_array(int size);
 
@@ -41,7 +55,6 @@ int main() {
     unsigned long long *lista = create_array(count);
 
     unsigned long long bubbleVec[count];
-    unsigned long long bubbleSwaps;
     copia(lista, bubbleVec, count);
     clock_t begin = clock();
     bubbleSwaps = bubbleSort(bubbleVec, count);
@@ -49,7 +62,6 @@ int main() {
     double time_spent_bubble = (double)(end - begin) / CLOCKS_PER_SEC;
 
     unsigned long long selection_sortVec[count];
-    unsigned long long selectionSwaps;
     copia(lista, selection_sortVec, count);
     begin = clock();
     selectionSwaps = selection_sort(selection_sortVec, count);
@@ -57,7 +69,6 @@ int main() {
     double time_spent_selection = (double)(end - begin) / CLOCKS_PER_SEC;
 
     unsigned long long insertion_sortVec[count];
-    unsigned long long insertionSwaps;
     copia(lista, insertion_sortVec, count);
     begin = clock();
     insertionSwaps = insertion_sort(insertion_sortVec, count);
@@ -66,21 +77,38 @@ int main() {
 
     unsigned long long quick_sortVec[count];
     copia(lista, quick_sortVec, count);
-    unsigned long long quickSwaps = 0;
     begin = clock();
-    quick_sort(quick_sortVec, 0, count - 1, &quickSwaps);
+    quickSwaps = quick_sort(quick_sortVec, 0, count - 1);
     end = clock();
     double time_spent_quick = (double)(end - begin) / CLOCKS_PER_SEC;
+
+    unsigned long long heap_sortVec[count];
+    copia(lista, heap_sortVec, count);
+    clock_t begin_heap = clock();
+    heap_sort(heap_sortVec, count);
+    clock_t end_heap = clock();
+    double time_spent_heap = (double)(end_heap - begin_heap) / CLOCKS_PER_SEC;
+
+    unsigned long long radix_sortVec[count];
+    copia(lista, radix_sortVec, count);
+    clock_t begin_radix = clock();
+    radixSort(radix_sortVec, count);
+    clock_t end_radix = clock();
+    double time_spent_radix = (double)(end_radix - begin_radix) / CLOCKS_PER_SEC;
 
     printf("\n end time bubble: %f", time_spent_bubble);
     printf("\n end time insertion: %f", time_spent_insertion);
     printf("\n end selection: %f", time_spent_selection);
-    printf("\n end time quick: %f\n", time_spent_quick);
-
+    printf("\n end time quick: %f", time_spent_quick);
+    printf("\nend time heap: %f", time_spent_heap);
+    printf("\nend time radix: %f \n", time_spent_radix);
+    
     printf("Trocas bubble: %lld\n", bubbleSwaps);
     printf("Trocas insertion: %lld\n", insertionSwaps);
     printf("Trocas selection: %lld\n", selectionSwaps);
     printf("Trocas quick: %lld\n", quickSwaps);
+    printf("Trocas heap: %lld\n", heapSwaps);
+    printf("Trocas radix: %lld\n", radixSwaps);
 
     printf("\n");
 
@@ -93,6 +121,103 @@ void copia(unsigned long long *A, unsigned long long *V, int size) {
     for (i = 0; i < size; i++)
         V[i] = A[i];
 }
+
+unsigned long long create_heap(unsigned long long lista[], unsigned long long count, unsigned long long i) {
+    unsigned long long maior = i;
+    unsigned long long left = 2 * i + 1;
+    unsigned long long right = 2 * i + 2;
+
+    if (left < count && lista[left] > lista[maior]) {
+        maior = left;
+    }
+
+    if (right < count && lista[right] > lista[maior]) {
+        maior = right;
+    }
+
+    if (maior != i) {
+        int aux = lista[i];
+        lista[i] = lista[maior];
+        lista[maior] = aux;
+        heapSwaps++;
+        create_heap(lista, count, maior);
+    }
+}
+
+
+
+unsigned long long heap_sort(unsigned long long lista[], unsigned long long count) {
+    for (int i = count / 2 - 1; i >= 0; i--) {
+        create_heap(lista, count, i);
+    }
+
+    for (int i = count - 1; i >= 0; i--) {
+        int aux = lista[0];
+        lista[0] = lista[i];
+        lista[i] = aux;
+        heapSwaps++;
+        create_heap(lista, i, 0);
+    }
+}
+
+unsigned long long getMax(unsigned long long *A, int size) {
+    unsigned long long max = A[0];
+    for (int i = 1; i < size; i++) {
+        if (A[i] > max) {
+            max = A[i];
+        }
+    }
+    return max;
+}
+
+void countSort(unsigned long long *A, int size, unsigned long long exp) {
+    const int RANGE = 10;
+    unsigned long long *output = (unsigned long long *)malloc(size * sizeof(unsigned long long));
+    if (output == NULL) {
+        perror("Falha na alocação de memória");
+        exit(EXIT_FAILURE);
+    }
+
+    int *count = (int *)malloc(RANGE * sizeof(int));
+    if (count == NULL) {
+        perror("Falha na alocação de memória");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < RANGE; i++) {
+        count[i] = 0;
+    }
+
+    for (int i = 0; i < size; i++) {
+        count[(A[i] / exp) % RANGE]++;
+    }
+
+    for (int i = 1; i < RANGE; i++) {
+        count[i] += count[i - 1];
+    }
+
+    for (int i = size - 1; i >= 0; i--) {
+        output[count[(A[i] / exp) % RANGE] - 1] = A[i];
+        count[(A[i] / exp) % RANGE]--;
+        radixSwaps++;
+    }
+
+    for (int i = 0; i < size; i++) {
+        A[i] = output[i];
+    }
+
+    free(output);
+    free(count);
+}
+
+void radixSort(unsigned long long *A, int size) {
+    unsigned long long max = getMax(A, size);
+
+    for (unsigned long long exp = 1; max / exp > 0; exp *= 10) {
+        countSort(A, size, exp);
+    }
+}
+
 
 unsigned long long bubbleSort(unsigned long long *lista, int count) {
     unsigned long long swapped;
@@ -150,7 +275,7 @@ unsigned long long insertion_sort(unsigned long long *lista, int count) {
     return swaps;
 }
 
-unsigned long long create_quick(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas) {
+unsigned long long create_quick(unsigned long long *lista, unsigned long long inicio, unsigned long long fim) {
     int aux;
     unsigned long long pivo = fim, k = inicio;
     for (int i = inicio; i < fim; i++) {
@@ -159,24 +284,26 @@ unsigned long long create_quick(unsigned long long *lista, unsigned long long in
             lista[i] = lista[k];
             lista[k] = aux;
             k++;
-            (*trocas)++;
         }
     }
     if (lista[k] > lista[pivo]) {
         aux = lista[pivo];
         lista[pivo] = lista[k];
         lista[k] = aux;
-        (*trocas)++;
     }
     return k;
 }
 
-unsigned long long quick_sort(unsigned long long *lista, unsigned long long inicio, unsigned long long fim, unsigned long long *trocas) {
+unsigned long long quick_sort(unsigned long long *lista, unsigned long long inicio, unsigned long long fim) {
+    unsigned long long trocas = 0;
     if (inicio < fim) {
-        unsigned long long pivo = create_quick(lista, inicio, fim, trocas);
-        quick_sort(lista, inicio, pivo - 1, trocas);
-        quick_sort(lista, pivo + 1, fim, trocas);
+        unsigned long long pivo = create_quick(lista, inicio, fim);
+        trocas += pivo - inicio;
+        trocas += fim - pivo;
+        trocas += quick_sort(lista, inicio, pivo - 1);
+        trocas += quick_sort(lista, pivo + 1, fim);
     }
+    return trocas;
 }
 
 void printarray(unsigned long long *lista, int count) {
