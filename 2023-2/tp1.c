@@ -173,16 +173,8 @@ unsigned long long getMax(unsigned long long *A, int size) {
 void countSort(unsigned long long *A, int size, unsigned long long exp) {
     const int RANGE = 10;
     unsigned long long *output = (unsigned long long *)malloc(size * sizeof(unsigned long long));
-    if (output == NULL) {
-        perror("Falha na alocação de memória");
-        exit(EXIT_FAILURE);
-    }
 
     int *count = (int *)malloc(RANGE * sizeof(int));
-    if (count == NULL) {
-        perror("Falha na alocação de memória");
-        exit(EXIT_FAILURE);
-    }
 
     for (int i = 0; i < RANGE; i++) {
         count[i] = 0;
