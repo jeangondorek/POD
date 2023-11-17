@@ -26,61 +26,68 @@
 #include <stdlib.h>
 #include <time.h>
 
+/* Variaveis globais para contar as trocas*/
 unsigned long long selectionSwaps;
 unsigned long long bubbleSwaps;
 unsigned long long quickSwaps = 0;
 unsigned long long insertionSwaps;
-
 unsigned long long heapSwaps = 0;
 unsigned long long radixSwaps = 0;
+
+/* Declaração das funções utilizadas ao longo do código*/
+
+/*Funções para clonagem de arrays, criação do array e print do array*/
 void copia(unsigned long long *A, unsigned long long *V, int size);
+unsigned long long *create_array(int size);
+void printarray(unsigned long long *A, int size);
+
+/* Funções de ordenamento */
 unsigned long long heap_sort(unsigned long long *A, unsigned long long inicio);
-unsigned long long create_heap(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
-unsigned long long getMax(unsigned long long *A, int size);
 void countSort(unsigned long long *A, int size, unsigned long long exp);
 void radixSort(unsigned long long *A, int size);
-
-void copia(unsigned long long *A, unsigned long long *v, int size);
-unsigned long long bubbleSort(unsigned long long *A, int size);
 unsigned long long selection_sort(unsigned long long *A, int size);
+unsigned long long bubbleSort(unsigned long long *A, int size);
 unsigned long long insertion_sort(unsigned long long *A, int size);
 unsigned long long quick_sort(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
+
+/* Funções auxiliares ao ordenamento*/
+unsigned long long create_heap(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
+unsigned long long getMax(unsigned long long *A, int size);
 unsigned long long create_quick(unsigned long long *A, unsigned long long inicio, unsigned long long fim);
-void printarray(unsigned long long *A, int size);
-unsigned long long *create_array(int size);
 
 int main() {
-    int i;
+    /* quantidade de valores no array*/
     int count = 10000;
+    /* criação do array com os valores definidos acima*/
     unsigned long long *lista = create_array(count);
 
     unsigned long long bubbleVec[count];
     copia(lista, bubbleVec, count);
-    clock_t begin = clock();
+    clock_t begin_bubble = clock();
     bubbleSwaps = bubbleSort(bubbleVec, count);
-    clock_t end = clock();
-    double time_spent_bubble = (double)(end - begin) / CLOCKS_PER_SEC;
+    clock_t end_bubble = clock();
+    double time_spent_bubble = (double)(end_bubble - begin_bubble) / CLOCKS_PER_SEC;
 
     unsigned long long selection_sortVec[count];
     copia(lista, selection_sortVec, count);
-    begin = clock();
+    clock_t begin_selection = clock();
     selectionSwaps = selection_sort(selection_sortVec, count);
-    end = clock();
-    double time_spent_selection = (double)(end - begin) / CLOCKS_PER_SEC;
+    clock_t end_selection = clock();
+    double time_spent_selection = (double)(end_selection - begin_selection) / CLOCKS_PER_SEC;
 
     unsigned long long insertion_sortVec[count];
     copia(lista, insertion_sortVec, count);
-    begin = clock();
+    clock_t begin_insertion = clock();
     insertionSwaps = insertion_sort(insertion_sortVec, count);
-    end = clock();
-    double time_spent_insertion = (double)(end - begin) / CLOCKS_PER_SEC;
+    clock_t end_insertion = clock();
+    double time_spent_insertion = (double)(end_insertion - begin_insertion) / CLOCKS_PER_SEC;
 
     unsigned long long quick_sortVec[count];
     copia(lista, quick_sortVec, count);
-    begin = clock();
+    clock_t begin_quick = clock();
     quickSwaps = quick_sort(quick_sortVec, 0, count - 1);
-    end = clock();
-    double time_spent_quick = (double)(end - begin) / CLOCKS_PER_SEC;
+    clock_t end_quick = clock();
+    double time_spent_quick = (double)(end_quick - begin_quick) / CLOCKS_PER_SEC;
 
     unsigned long long heap_sortVec[count];
     copia(lista, heap_sortVec, count);
@@ -96,14 +103,14 @@ int main() {
     clock_t end_radix = clock();
     double time_spent_radix = (double)(end_radix - begin_radix) / CLOCKS_PER_SEC;
 
-    printf("\n end time bubble: %f", time_spent_bubble);
-    printf("\n end time insertion: %f", time_spent_insertion);
-    printf("\n end selection: %f", time_spent_selection);
-    printf("\n end time quick: %f", time_spent_quick);
+    printf("\nend time bubble: %f", time_spent_bubble);
+    printf("\nend time insertion: %f", time_spent_insertion);
+    printf("\nend selection: %f", time_spent_selection);
+    printf("\nend time quick: %f", time_spent_quick);
     printf("\nend time heap: %f", time_spent_heap);
     printf("\nend time radix: %f \n", time_spent_radix);
     
-    printf("Trocas bubble: %lld\n", bubbleSwaps);
+    printf("\nTrocas bubble: %lld\n", bubbleSwaps);
     printf("Trocas insertion: %lld\n", insertionSwaps);
     printf("Trocas selection: %lld\n", selectionSwaps);
     printf("Trocas quick: %lld\n", quickSwaps);
@@ -143,8 +150,6 @@ unsigned long long create_heap(unsigned long long lista[], unsigned long long co
         create_heap(lista, count, maior);
     }
 }
-
-
 
 unsigned long long heap_sort(unsigned long long lista[], unsigned long long count) {
     for (int i = count / 2 - 1; i >= 0; i--) {
@@ -209,7 +214,6 @@ void radixSort(unsigned long long *A, int size) {
         countSort(A, size, exp);
     }
 }
-
 
 unsigned long long bubbleSort(unsigned long long *lista, int count) {
     unsigned long long swapped;
